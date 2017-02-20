@@ -1,0 +1,45 @@
+To run this program you have to Install Postman on you PC.
+Select GET and enter "http://jsonplaceholder.typicode.com/comments/1"as url
+Copy the code below in "Tests" Section and then Send the Request.
+The code below checks if the format and the values are correct, the response time is under 500 ms
+and that the content type is present.
+
+var jsonData = JSON.parse(responseBody);
+var schema = {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "postId": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "postId",
+    "id",
+    "name",
+    "email",
+    "body"
+  ]
+}
+
+tests["shouldCheckFormat"] = tv4.validate(jsonData, schema);
+tests["Content-Type is present"] = postman.getResponseHeader("Content-Type");
+tests["Response time is less than 500ms"] = responseTime < 500;
+tests["PostId is present"] = responseBody.has("postId");
+tests["id is present"] = responseBody.has("id");
+tests["name is present"] = responseBody.has("name");
+tests["email is present"] = responseBody.has("email");
+tests["Body is present"] = responseBody.has("body");
+tests["PostId"] = jsonData.postId === 1;
